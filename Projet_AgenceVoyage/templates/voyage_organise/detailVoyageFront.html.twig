@@ -1,0 +1,107 @@
+{% extends 'front/voyage.html.twig' %}
+{% block body %}
+
+<div class="col-lg-9" >
+    <div class="row">
+
+        <div class="col-md-12 ftco-animate">
+            <div class="single-slider owl-carousel">
+                <div class="item">
+                    <h2 style="color:#0c5460">Voyage Organisé</h2>
+                    <br>
+                    <div class="hotel-img"  style="background-image: url('{{ asset ('upload/img/' ~ voyage.image) }}')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 hotel-single mt-4 mb-5 ftco-animate">
+            <h6> Destination  : {{ voyage.destination }} </h6>
+            <br>
+            <h6> Durée de voyage :  {{ voyage.duree }}</h6>
+            <br>
+            <h6> Hôtel :  {{ voyage.hotel }}</h6>
+            <br>
+            <h6> Programme :  {{ voyage.programme }}</h6>
+            <br>
+            <h6> Prix :  {{ voyage.prix }} dt</h6>
+            <br>
+            <div class="item">
+                <h2 style="color:#0c5460">Attraction</h2>
+                <br>
+                <div class="hotel-img" style="background-image: url('{{ asset ('upload/img/' ~ voyage.attraction.image) }}')"></div>
+            </div>
+            <br>
+            <h6> Attraction :  {{ voyage.attraction }} </h6>
+            <br>
+            <h6> Lieu :  {{ voyage.attraction.lieu }} </h6>
+            <br>
+            <h6> Description :  {{ voyage.attraction.description }} </h6>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
+                <h4 style="color:#0c5460" class="mb-5">Vérifier la disponibilité & la réservation</h4>
+                <div class="fields">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" id="checkin_date" class="form-control" placeholder="Date from">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" id="checkin_date" class="form-control" placeholder="Date to">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="select-wrap one-third">
+                                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                    <select name="" id="" class="form-control" placeholder="Guest">
+                                        <option value="0">Guest</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="select-wrap one-third">
+                                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                    <select name="" id="" class="form-control" placeholder="Children">
+                                        <option value="0">Children</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="submit" value="Vérifier la disponibilité" class="btn btn-primary py-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+</div>
+{% endblock %}
