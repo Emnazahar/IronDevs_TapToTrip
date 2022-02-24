@@ -1,0 +1,38 @@
+{% extends 'templateback.html.twig' %}
+
+{% block body %}
+    <h4 class="card-title"> liste des billets  </h4>
+    <div>
+        <a href="{{ path('addBillet') }}">Add Billet</a>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-striped">
+
+        <tr>
+            <td>Id</td>
+            <td>Num</td>
+            <td>Date</td>
+            <td>Destination</td>
+            <td>Categorie</td>
+            <td>Prix</td>
+            <td>Update</td>
+            <td>Delete</td>
+
+        </tr>
+        {% for i in billet %}
+            <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.Num}}</td>
+                <td>{{ i.Date|date}}</td>
+                <td>{{ i.Destination }}</td>
+                <td>{{ i.Categorie}}</td>
+                <td>{{ i.Prix}}</td>
+                <td>
+                    <a href="{{ path('updatebillet',{'id':i.id}) }}">Update</a>
+                </td>
+                <td>  <a href="{{ path('removebillet',{'id':i.id}) }}">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

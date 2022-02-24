@@ -1,0 +1,35 @@
+{% extends 'templateback.html.twig' %}
+
+{% block body %}
+    <h4 class="card-title"> liste des vols  </h4>
+    <div>
+        <a href="{{ path('addVol') }}">Add Vol</a>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-striped">
+
+    <tr>
+        <td>Id</td>
+        <td>Date</td>
+        <td>HeureDep</td>
+        <td>HeureArrive</td>
+        <td>Update</td>
+        <td>Delete</td>
+
+
+    </tr>
+    {% for i in vol %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.date|date}}</td>
+            <td>{{ i.heuredep }}</td>
+            <td>{{ i.heurearrive}}</td>
+            <td>
+            <a href="{{ path('updateVol',{'id':i.id}) }}">Update</a>
+            </td>
+            <td>  <a href="{{ path('removeVol',{'id':i.id}) }}">Remove</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
