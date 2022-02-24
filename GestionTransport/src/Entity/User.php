@@ -2,18 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CategorieRepository::class)
- * @UniqueEntity("nom")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class Categorie
+class User
 {
     /**
      * @ORM\Id
@@ -23,19 +20,22 @@ class Categorie
     private $id;
 
     /**
-     * @Assert\NotBlank(message="Veuillez remplir tous les champs")
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
     /**
-     * @Assert\NotBlank(message="Veuillez remplir tous les champs")
      * @ORM\Column(type="string", length=255)
      */
-    private $boitevitesse;
+    private $prenom;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="categorie",cascade={"remove"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $login;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transport::class, mappedBy="user",cascade={"remove"})
      */
     private $transports;
 
@@ -61,20 +61,32 @@ class Categorie
         return $this;
     }
 
-    public function getBoiteVitesse(): ?string
+    public function getPrenom(): ?string
     {
-        return $this->boitevitesse;
+        return $this->prenom;
     }
 
-    public function setBoiteVitesse(?string $boitevitesse): self
+    public function setPrenom(string $prenom): self
     {
-        $this->boitevitesse = $boitevitesse;
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(string $login): self
+    {
+        $this->login = $login;
 
         return $this;
     }
 
     /**
-     * @return Collection|Transport[]
+     * @return Collection<int, Transport>
      */
     public function getTransports(): Collection
     {
@@ -85,7 +97,7 @@ class Categorie
     {
         if (!$this->transports->contains($transport)) {
             $this->transports[] = $transport;
-            $transport->setIdcategorie($this);
+            $transport->setUser($this);
         }
 
         return $this;
@@ -95,10 +107,11 @@ class Categorie
     {
         if ($this->transports->removeElement($transport)) {
             // set the owning side to null (unless already changed)
-            if ($transport->getIdcategorie() === $this) {
-                $transport->setIdcategorie(null);
+            if ($transport->getUser() === $this) {
+                $transport->setUser(null);
             }
         }
+
         return $this;
     }
 }

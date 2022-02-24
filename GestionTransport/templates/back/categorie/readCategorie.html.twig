@@ -1,4 +1,4 @@
-{% extends 'baseBack.html.twig' %}
+{% extends 'back/baseBack.html.twig' %}
 
 {% block body %}
 
@@ -17,7 +17,7 @@
                                     Nom
                                 </th>
                                 <th>
-                                    Stock
+                                    Boite Vitesse
                                 </th>
                                 <th>
                                     Supprimer
@@ -34,7 +34,7 @@
                                     {{ c.nom }}
                                 </td>
                                 <td>
-                                    {{ c.stock }}
+                                    {{ c.boitevitesse }}
                                 </td>
                                 <td>
                                     <a href ="{{ path('delete_categorie',{'id':c.id}) }}">Supprimer</a>

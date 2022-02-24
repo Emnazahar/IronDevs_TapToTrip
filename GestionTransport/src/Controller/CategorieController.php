@@ -14,18 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategorieController extends AbstractController
 {
     /**
-     * @Route("/categorie", name="categorie_list")
-     */
-    public function index(): Response
-    {
-        /*return $this->render('categorie/categorie.html.twig', [
-            'controller_name' => 'CategorieController',
-        ]);*/
-        $res = $this->getDoctrine()->getManager()->getRepository(Categorie::class)->findAll();
-        return $this->render('categorie/categorie.html.twig',array('ssss'=>$res));
-    }
-
-    /**
      * @Route("/addCategorie", name="add_categorie")
      */
     public function addCategorie(Request $request): Response
@@ -35,12 +23,11 @@ class CategorieController extends AbstractController
         $form = $this->createForm(CategorieType::class, $categorie);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            var_dump("////////////////////////");
             $em->persist($categorie);
             $em->flush();
             return $this->redirectToRoute('read_categorie');
         }
-        return $this->render('categorie/addCategorie.html.twig', array("formCategorie" => $form->createView()));
+        return $this->render('back/categorie/addCategorie.html.twig', array("formCategorie" => $form->createView()));
     }
 
     /**
@@ -50,7 +37,7 @@ class CategorieController extends AbstractController
     {
         $categorie= $this->getDoctrine()->getRepository(Categorie::class)->findAll();
 
-        return $this->render("categorie/readCategorie.html.twig",array('tabCategorie'=>$categorie));
+        return $this->render("back/categorie/readCategorie.html.twig",array('tabCategorie'=>$categorie));
     }
 
     /**
@@ -58,8 +45,6 @@ class CategorieController extends AbstractController
      */
     public function editCategorie(Request $request, $id)
     {
-        //$transport = new Transport();
-        //$transport = $this->getDoctrine()->getRepository(Transport::class)->find($id);
         $em = $this->getDoctrine()->getManager();
         $categorie = $em->getRepository(Categorie::class)->find($id);
         $form = $this->createForm(CategorieType::class, $categorie);
@@ -69,7 +54,7 @@ class CategorieController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('read_categorie');
         }
-        return $this->render('categorie/editCategorie.html.twig', array("formCategorie" => $form->createView()));
+        return $this->render('back/categorie/editCategorie.html.twig', array("formCategorie" => $form->createView()));
     }
 
     /**

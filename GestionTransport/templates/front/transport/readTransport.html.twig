@@ -1,0 +1,33 @@
+{% extends 'front/baseFront.html.twig' %}
+
+{% block body %}
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row d-flex">
+                {% for c in tabTransport%}
+                    <div class="col-md-3 d-flex ftco-animate">
+                        <div class="blog-entry align-self-stretch">
+                            <a href="blog-single.html" class="block-20" style="background-image: url('{{ asset('uploads/produit_image/'~c.image)}}')">
+                            </a>
+                            <div class="text p-4 d-block">
+                                <!--<span class="tag">Tips, Travel</span>-->
+                                <h2 class="heading mt-3">Marque: {{ c.marque }}</h2>
+                                <h2 class="heading mt-3">Modele: {{ c.modele }}</h2>
+                                <h2 class="heading mt-3">Nombre de siege: {{ c.nbsiege }}</h2>
+                                <h2 class="heading mt-3">Categorie: {{ c.categorie.nom }}</h2>
+                                <h2 class="heading mt-3">Prix: {{ c.prix }} dt </h2>
+                                <button type="button" class="btn btn-outline-secondary btn-lg">Réserver</button>
+                                <!--<div class="meta mb-3">
+                                    <div><a href="#">August 12, 2018</a></div>
+                                    <div><a href="#">Admin</a></div>
+                                    <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -37,15 +37,24 @@ class TransportRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Transport
+/*    public function findOneBySomeField($value): ?Transport
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
+            ;
+    }*/
+
+    public function findOneByMatricule($matricule): ?Transport
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.matricule = :matricule')
+            ->setParameter('matricule', $matricule)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
-    */
+
 }

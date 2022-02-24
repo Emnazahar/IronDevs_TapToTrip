@@ -6,9 +6,11 @@ use App\Repository\TransportRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TransportRepository::class)
+ * @UniqueEntity("matricule")
  */
 class Transport
 {
@@ -20,34 +22,54 @@ class Transport
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Veuillez remplir tous les champs")
      * @ORM\Column(type="string", length=255)
      */
     private $matricule;
 
     /**
+     * @Assert\NotBlank(message="Veuillez remplir tous les champs")
      * @ORM\Column(type="string", length=255)
      */
     private $marque;
 
     /**
+     * @Assert\NotBlank(message="Veuillez remplir tous les champs")
      * @ORM\Column(type="string", length=255)
      */
     private $modele;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
+     * @Assert\Range(
+     *      min = 1,
+     *     )
      */
     private $nbsiege;
 
     /**
+     * @Assert\NotBlank(message="Veuillez remplir tous les champs")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
+     * @Assert\NotBlank(message="Veuillez remplir tous les champs")
+     * @Assert\Positive
+     * @ORM\Column(type="float")
+     */
+    private $prix;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="transports")
      */
     private $categorie;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transports")
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -114,6 +136,18 @@ class Transport
         return $this;
     }
 
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): self
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
     public function getCategorie(): ?Categorie
     {
         return $this->categorie;
@@ -122,6 +156,18 @@ class Transport
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class TransportController extends AbstractController
 {
-
     /**
      * @Route("/addTransport", name="add_transport")
      */
@@ -22,25 +21,24 @@ class TransportController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $transport = new Transport();
         $form = $this->createForm(TransportType::class, $transport);
+
         $form->handleRequest($request);
-        //var_dump($transport->getIdcategorie());
         if ($form->isSubmitted() && $form->isValid()) {
 
             //upload image
             $uploadFile = $form['image']->getData(); // valeur ta3 image (ely how name ta3ha)
             if($uploadFile != null) {
-                $filename = uniqid();//crypté image
+                $filename = $uploadFile->getClientOriginalName();//crypté image
 
                 $uploadFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
 
                 $transport->setImage($filename);
             }
-            //var_dump($transport);
             $em->persist($transport);
             $em->flush();
             return $this->redirectToRoute('read_transport');
         }
-        return $this->render('transport/addTransport.html.twig', array("formTransport" => $form->createView()));
+        return $this->render('back/transport/addTransport.html.twig', array("formTransport" => $form->createView()));
     }
 
     /**
@@ -50,7 +48,7 @@ class TransportController extends AbstractController
     {
         $transport= $this->getDoctrine()->getRepository(Transport::class)->findAll();
 
-        return $this->render("transport/readTransport.html.twig",array('tabTransport'=>$transport));
+        return $this->render("back/transport/readTransport.html.twig",array('tabTransport'=>$transport));
     }
 
     /**
@@ -65,33 +63,39 @@ class TransportController extends AbstractController
         $form = $this->createForm(TransportType::class, $transport);
         $form->handleRequest($request);
 
-        /*$imageDB=$transport->getImage();
+       /*
+        $imageDB = $transport->getImage();
+        if($imageForm == null) {
 
+        } else {
+            $filename = $imageForm->getClientOriginalName();//crypté image
+            $imageForm->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
+            $transport->setImage($filename);
+        }*/
 
-        if($imageForm==null) {
-            $imageForm=$imageDB;
-        }
-
-            $filename = uniqid();//crypté image
-
-
-
-            $transport->setImage($filename);*/
+            //$filename = uniqid();//crypté image
 
       /*  $uploadFile = $request->file('image');
         if($uploadFile != null) {
             $filename = uniqid();//crypté image
-
             $uploadFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
-
             $transport->setImage($filename);
         }*/
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //upload image
+            $uploadFile = $form['image']->getData(); // valeur ta3 image (ely how name ta3ha)
+            if($uploadFile != null) {
+                $filename = $uploadFile->getClientOriginalName();//crypté image
+
+                $uploadFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
+
+                $transport->setImage($filename);
+            }
             $em->flush();
             return $this->redirectToRoute('read_transport');
         }
-        return $this->render('transport/editTransport.html.twig', array("formTransport" => $form->createView()));
+        return $this->render('back/transport/editTransport.html.twig', array("formTransport" => $form->createView()));
     }
 
     /**
@@ -105,5 +109,13 @@ class TransportController extends AbstractController
         return $this->redirectToRoute('read_transport');
     }
 
+    /**
+     * @Route("/frontReadTransport",name="front_read_transport")
+     */
+    public function frontReadTransport()
+    {
+        $transport= $this->getDoctrine()->getRepository(Transport::class)->findAll();
 
+        return $this->render("front/transport/readTransport.html.twig",array('tabTransport'=>$transport));
+    }
 }

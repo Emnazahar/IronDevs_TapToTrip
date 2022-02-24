@@ -22,6 +22,7 @@ class TransportType extends AbstractType
             ->add('modele')
             ->add('nbsiege')
             ->add('image', FileType::class, array('data_class'=>null ,'required'=>false))
+            ->add('prix')
             ->add('categorie' ,EntityType::class,[
                 'class'=>Categorie::class,
                 'choice_label'=>'nom'
