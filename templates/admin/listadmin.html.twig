@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ form_start(formuser,{'attr': {'novalidate': 'novalidate'}} ) }}
+        <a href="{{ path('adminlist') }}" class="mdi mdi-keyboard-backspace"  > </a>
+    </div>
+    <div class="card-body">
+    <h4  class="card-title">add user </h4>
+    <div class="table-responsive">
+
+    <table class="table">
+        <tr>
+            <td>
+    {{ form_label(formuser.nom,"nom") }}
+            </td>
+            <td>
+                {{ form_widget(formuser.nom) }}
+                {{ form_errors(formuser.nom) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(formuser.prenom,"prenom") }}
+            </td>
+            <td>
+                {{ form_widget(formuser.prenom ) }}
+                {{ form_errors(formuser.prenom) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(formuser.numtel,"numtel") }}
+            </td>
+            <td>
+                {{ form_widget(formuser.numtel)}}
+                {{ form_errors(formuser.numtel) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(formuser.email,"Email") }}
+            </td>
+            <td>
+                {{ form_widget(formuser.email)}}
+                {{ form_errors(formuser.email) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(formuser.password,"password") }}
+            </td>
+            <td>
+                {{ form_widget(formuser.password)}}
+                {{ form_errors(formuser.password) }}
+            </td>
+        </tr>
+        {{ form_widget(formuser.Submit)}}
+                {{ form_end(formuser) }}
+            </td>
+        </tr>
+
+    </table>
+{% endblock %}

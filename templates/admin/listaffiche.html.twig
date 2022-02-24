@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<h4 class="card-title"> User's List  </h4>
+    <div>
+        <a href="{{ path('addUser') }}">Add User</a>
+    </div>
+<div class="table-responsive">
+    <table class="table table-striped">
+    <tr>
+        <td>id</td>
+        <td>nom</td>
+        <td>prenom</td>
+        <td>numtel</td>
+        <td>email</td>
+        <td>update</td>
+        <td>delete</td>
+    </tr>
+    {% for i in tabadmin %}
+        <tr>
+            <td>{{ i.Id }}</td>
+            <td>{{ i.Nom }}</td>
+            <td>{{ i.Prenom }}</td>
+            <td>{{ i.Numtel}}</td>
+            <td>{{ i.Email }}</td>
+            <td>
+                <a href="{{ path('update',{'id':i.Id}) }}" >Update</a>
+            </td>
+            <td>
+                <a href="{{ path('remove',{'id':i.Id }) }}" >Remove</a>
+            </td>
+        </tr>
+    {% endfor %}
+
+    </table>
+</div>
+        {% endblock %}
