@@ -23,24 +23,24 @@ class Transport
 
     /**
      * @Assert\NotBlank(message="Veuillez remplir tous les champs")
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $matricule;
 
     /**
      * @Assert\NotBlank(message="Veuillez remplir tous les champs")
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $marque;
 
     /**
      * @Assert\NotBlank(message="Veuillez remplir tous les champs")
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $modele;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Assert\Positive
      * @Assert\Range(
      *      min = 1,
@@ -57,7 +57,7 @@ class Transport
     /**
      * @Assert\NotBlank(message="Veuillez remplir tous les champs")
      * @Assert\Positive
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $prix;
 

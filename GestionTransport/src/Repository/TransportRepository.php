@@ -57,4 +57,35 @@ class TransportRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByUserID($idUser)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.user = :val')
+            ->setParameter('val', $idUser)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findAllByUserIDNull()
+    {
+        return $this->createQueryBuilder('t')
+            ->Where('t.user IS NULL')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByCriteria($categorie, $prixMin, $prixMax) {
+        return $this->createQueryBuilder('t')
+            ->Where('t.categorie = :val')
+            ->Where('t.prix IS IN (:val2,:val3)')
+            ->setParameter('val', $categorie)
+            ->setParameter('val2', $prixMin)
+            ->setParameter('val3', $prixMax)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

@@ -39,9 +39,15 @@ class User
      */
     private $transports;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Billet::class, mappedBy="user")
+     */
+    private $billets;
+
     public function __construct()
     {
         $this->transports = new ArrayCollection();
+        $this->billets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +115,36 @@ class User
             // set the owning side to null (unless already changed)
             if ($transport->getUser() === $this) {
                 $transport->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Billet>
+     */
+    public function getBillets(): Collection
+    {
+        return $this->billets;
+    }
+
+    public function addBillet(Billet $billet): self
+    {
+        if (!$this->billets->contains($billet)) {
+            $this->billets[] = $billet;
+            $billet->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBillet(Billet $billet): self
+    {
+        if ($this->billets->removeElement($billet)) {
+            // set the owning side to null (unless already changed)
+            if ($billet->getUser() === $this) {
+                $billet->setUser(null);
             }
         }
 

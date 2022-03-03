@@ -1,9 +1,52 @@
 {% extends 'front/baseFront.html.twig' %}
 
 {% block body %}
-    <section class="ftco-section bg-light">
+    <section class="ftco-section ftco-degree-bg">
         <div class="container">
-            <div class="row d-flex">
+            <div class="row">
+                <div class="col-lg-3 sidebar ftco-animate">
+                    <div class="sidebar-wrap bg-light ftco-animate">
+                    <h3 class="heading mb-4">Find Transport</h3>
+                        {{ form_start(formSearchTransport, {attr: {novalidate: 'novalidate'}}) }}
+                    <form action="#">
+                <div class="fields">
+                    <div class="form-group">
+                        {{ form_widget(formSearchTransport.categorie, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(formSearchTransport.categorie, {'attr': {'class': 'text-danger'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="checkin_date" class="form-control" placeholder="Date from">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="checkin_date" class="form-control" placeholder="Date to">
+                    </div>
+                    <div class="form-group">
+                        <div class="range-slider">
+		              		<span>
+                                {#{{ form_widget(formSearchTransport.prixMin, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formSearchTransport.prixMin, {'attr': {'class': 'text-danger'}}) }} -
+                                {{ form_widget(formSearchTransport.prixMax, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formSearchTransport.prixMax, {'attr': {'class': 'text-danger'}}) }}#}
+                                <input type="number" value="25000" min="0" max="120000"/>	-
+                                <input type="number" value="50000" min="0" max="120000"/>
+                            </span>
+                            <input value="1000" min="0" max="120000" step="500" type="range"/>
+                            <input value="50000" min="0" max="120000" step="500" type="range"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
+                    </div>
+                </div>
+            </form>
+         {{form_end(formSearchTransport)}}
+        </div>
+    </div>
+
+
+
                 {% for c in tabTransport%}
                     <div class="col-md-3 d-flex ftco-animate">
                         <div class="blog-entry align-self-stretch">
@@ -16,18 +59,14 @@
                                 <h2 class="heading mt-3">Nombre de siege: {{ c.nbsiege }}</h2>
                                 <h2 class="heading mt-3">Categorie: {{ c.categorie.nom }}</h2>
                                 <h2 class="heading mt-3">Prix: {{ c.prix }} dt </h2>
-                                <button type="button" class="btn btn-outline-secondary btn-lg">Réserver</button>
-                                <!--<div class="meta mb-3">
-                                    <div><a href="#">August 12, 2018</a></div>
-                                    <div><a href="#">Admin</a></div>
-                                    <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                                </div>-->
+                                <a href="{{ path('verif_billet',{'idTransport':c.id}) }}">Réserver</a>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
 
-            </div>
-        </div>
+    </div>
+    </div>
     </section>
+
 {% endblock %}

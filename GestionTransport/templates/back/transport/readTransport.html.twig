@@ -60,7 +60,7 @@
                                     {{ c.categorie.nom }}
                                 </td>
                                 <td>
-                                    <img class="card-img-top img-fluid" src="{{ asset('uploads/produit_image/'~c.image) }}"></td>
+                                    <img class="card-img-top img-fluid" src="{{ asset('uploads/produit_image/'~c.image) }}" style="width: 100px ; height: 100px"></td>
                                 </td>
                                 <td>
                                     <a href ="{{ path('delete_transport',{'id':c.id}) }}">Supprimer</a>
