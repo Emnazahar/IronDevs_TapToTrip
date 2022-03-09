@@ -19,7 +19,10 @@ class AttractionType extends AbstractType
             ->add('nom')
             ->add('lieu')
             ->add('description')
-            ->add('image', FileType::class, array('data_class'=>null))
+            ->add('images', FileType::class, ['label'=> false,
+                                                        'multiple'=>true,
+                                                        'mapped'=>false,
+                                                        'required'=>false])
             ->add("Soumettre",SubmitType::class)
         ;
     }

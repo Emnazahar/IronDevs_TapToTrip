@@ -48,4 +48,33 @@ class VoyageOrganiseRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    //Tri ascendant par nom du voyage organisé
+    function orderByDestAscQB(){
+        return $this->createQueryBuilder('vo')
+            -> orderBy('vo.destination','ASC')
+            -> getQuery()->getResult();
+    }
+
+    //Tri descendant par nom du voyage organisé
+    function orderByDestDescQB(){
+        return $this->createQueryBuilder('vo')
+            -> orderBy('vo.destination','DESC')
+            -> getQuery()->getResult();
+    }
+
+    //Tri ascendant par prix du voyage organisé
+    function orderByPrixAscQB(){
+        return $this->createQueryBuilder('vo')
+            -> orderBy('vo.prix','ASC')
+            -> getQuery()->getResult();
+    }
+
+    //Tri descendant par prix du voyage organisé
+    function orderByPrixDescQB(){
+        return $this->createQueryBuilder('vo')
+            -> orderBy('vo.prix','DESC')
+            -> getQuery()->getResult();
+    }
+
 }

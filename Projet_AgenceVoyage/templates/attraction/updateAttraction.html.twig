@@ -36,10 +36,21 @@
                 </tr>
                 <tr>
                     <td>
-                        {{ form_label(formAttraction.image,"Photo") }}
+                        {{ form_label(formAttraction.images,"Photo") }}
                     </td>
                     <td>
-                        {{ form_widget(formAttraction.image)}}
+                        {{ form_widget(formAttraction.images)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>Images</h4>
+                    </td>
+                    <td>
+                        {% for image in attraction.images %}
+                    <img src="{{ asset ('upload/img/' ~ image.nom) }}" alt="Image" style="width: 80px ; height: 80px">
+
+                        {% endfor %}
                     </td>
                 </tr>
                 <tr>

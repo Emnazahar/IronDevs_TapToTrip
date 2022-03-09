@@ -22,7 +22,7 @@ class VoyageOrganise
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255 ,nullable=true)
      * @Assert\NotBlank
      * @Assert\Length(
      *      min = 2,
@@ -34,44 +34,44 @@ class VoyageOrganise
     private $destination;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255 ,nullable=true)
      * @Assert\NotBlank
      */
     private $duree;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text" ,nullable=true)
      * @Assert\NotBlank
      */
     private $programme;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255 ,nullable=true)
      * @Assert\File()
      * @Assert\NotBlank
      */
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255 ,nullable=true)
      * @Assert\NotBlank
      */
     private $hotel;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer" ,nullable=true)
      * @Assert\Positive
      * @Assert\NotNull
      */
     private $prix;
 
-
-
     /**
-     * @ORM\ManyToOne(targetEntity=Attraction::class, inversedBy="voyageOrganises")
-     * @Assert\NotBlank
+     * @ORM\ManyToOne(targetEntity=Attraction::class, inversedBy="voyageOrganises" )
+     * @Assert\NotNull
      */
     private $attraction;
+
+
 
 
     /**
@@ -163,8 +163,6 @@ class VoyageOrganise
         return $this;
     }
 
-
-
     public function getAttraction(): ?Attraction
     {
         return $this->attraction;
@@ -176,6 +174,10 @@ class VoyageOrganise
 
         return $this;
     }
+
+
+
+
 
 
 

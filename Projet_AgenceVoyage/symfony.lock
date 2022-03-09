@@ -1,4 +1,13 @@
 {
+    "blackknight467/star-rating-bundle": {
+        "version": "v2.0.1"
+    },
+    "captcha-com/captcha": {
+        "version": "4.2.5"
+    },
+    "captcha-com/symfony-captcha-bundle": {
+        "version": "4.2.12"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -69,8 +78,17 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "knplabs/knp-components": {
+        "version": "v3.4.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
+    },
+    "mercuryseries/flashy-bundle": {
+        "version": "v3.0.0"
     },
     "monolog/monolog": {
         "version": "1.26.1"

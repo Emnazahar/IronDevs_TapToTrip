@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     {% block css %}
-        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Alex+Brush" rel="stylesheet">
+
+
+
+        <link href="{{ asset ('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700') }}" rel="stylesheet">
+        <link href="{{ asset ('https://fonts.googleapis.com/css?family=Alex+Brush') }}" rel="stylesheet">
 
         <link rel="stylesheet" href="{{ asset ('Front/css/open-iconic-bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset ('Front/css/animate.css') }}">
@@ -1015,6 +1018,12 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="{{ asset ('Front/js/google-map.js') }}"></script>
     <script src="{{ asset ('Front/js/main.js') }}"></script>
+
+
+
+
+
+
 {% endblock %}
 
 </body>

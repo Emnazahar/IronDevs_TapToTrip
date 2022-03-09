@@ -50,23 +50,24 @@ class Attraction
      */
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=500)
-     * @Assert\NotBlank
-     * @Assert\File()
-     */
-    private $image;
-
-
 
     /**
-     * @ORM\OneToMany(targetEntity=VoyageOrganise::class, mappedBy="attraction",cascade={"remove"})
+     * @ORM\OneToMany(targetEntity=VoyageOrganise::class, mappedBy="attraction" ,cascade={"remove"})
      */
     private $voyageOrganises;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="attractions", orphanRemoval=true, cascade={"persist"})
+     * @Assert\NotBlank
+     */
+    private $images;
+
+
 
     public function __construct()
     {
         $this->voyageOrganises = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
 
@@ -112,18 +113,13 @@ class Attraction
         return $this;
     }
 
-    public function getImage()
+
+
+    //Récuperer par Nom
+    public function __toString()
     {
-        return $this->image;
+        return(string)$this->getNom();
     }
-
-    public function setImage($image)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
 
     /**
      * @return Collection|VoyageOrganise[]
@@ -155,10 +151,34 @@ class Attraction
         return $this;
     }
 
-    //Récuperer par Nom
-    public function __toString()
+    /**
+     * @return Collection|Images[]
+     */
+    public function getImages(): Collection
     {
-        return(string)$this->getNom();
+        return $this->images;
+    }
+
+    public function addImage(Images $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setAttractions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getAttractions() === $this) {
+                $image->setAttractions(null);
+            }
+        }
+
+        return $this;
     }
 
 

@@ -4,6 +4,10 @@ namespace App\Controller;
 use App\Entity\Attraction;
 use App\Entity\VoyageOrganise;
 use App\Form\VoyageOrganiseType;
+use App\Repository\VoyageOrganiseRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +20,7 @@ class VoyageOrganiseController extends AbstractController
     /**
      * @Route("/voyage/organise", name="voyage_organise")
      */
-    public function index(): Response
+    public function index()
     {
         return $this->render('voyage_organise/index.html.twig', [
             'controller_name' => 'VoyageOrganiseController',
@@ -28,12 +32,20 @@ class VoyageOrganiseController extends AbstractController
     /**
      * @Route("/listVoyage",name="listVoyage")
      */
-    public function list()
+    public function list(Request $request, PaginatorInterface $paginator)
     {
-        $voyage= $this->getDoctrine()->
-        getRepository(VoyageOrganise::class)->findAll();
-        return $this->render("voyage_organise/listVoyage.html.twig",
-            array('tabVoyage'=>$voyage));
+        $voyage= $this->getDoctrine()->getRepository(VoyageOrganise::class)->findAll();
+
+        $voyages = $paginator->paginate(
+        //Passer les données
+            $voyage,
+            $request->query->getInt('page',1),
+            3
+        );
+
+        return $this->render('voyage_organise/listVoyage.html.twig', [
+            'voyages' => $voyages,
+        ]);
     }
 
 
@@ -41,12 +53,20 @@ class VoyageOrganiseController extends AbstractController
     /**
      * @Route("/showVoyages",name="showVoyages")
      */
-    public function showVoyages()
+    public function showVoyages(Request $request, PaginatorInterface $paginator)
     {
-        $voyage= $this->getDoctrine()->
-        getRepository(VoyageOrganise::class)->findAll();
-        return $this->render("voyage_organise/showVoyagesFront.html.twig",
-            array('tabVoyages'=>$voyage));
+        $voyage= $this->getDoctrine()->getRepository(VoyageOrganise::class)->findAll();
+
+        $voyages = $paginator->paginate(
+        //Passer les données
+            $voyage,
+            $request->query->getInt('page',1),
+            8
+        );
+
+        return $this->render('voyage_organise/showVoyagesFront.html.twig', [
+            'voyages' => $voyages,
+        ]);
     }
 
     /* Afficher le detail d'un voyage organisé dans la partie Front */
@@ -66,7 +86,7 @@ class VoyageOrganiseController extends AbstractController
     /**
      * @Route("/addVoyage",name="addVoyage")
      */
-    public function add(Request$request ){
+    public function add(Request$request, FlashyNotifier $flashy){
         $voyage= new VoyageOrganise();
         $form= $this->createForm(VoyageOrganiseType::class,$voyage);
         $form->handleRequest($request);
@@ -84,6 +104,10 @@ class VoyageOrganiseController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($voyage);
             $em->flush();
+
+            //flash message
+            $flashy->success('Voyage organisé ajouté avec succès !', 'http://your-awesome-link.com');
+
             return $this->redirectToRoute("listVoyage");
         }
         return $this->render("voyage_organise/addVoyage.html.twig",array("formVoyage"=>$form->createView()));
@@ -94,7 +118,7 @@ class VoyageOrganiseController extends AbstractController
     /**
      * @Route("/updateVoyage/{id}",name="updateVoyage")
      */
-    public function update(Request $request,$id){
+    public function update(Request $request,$id, FlashyNotifier $flashy){
         $voyage= $this->getDoctrine()->getRepository(VoyageOrganise::class)->find($id);
         $form= $this->createForm(VoyageOrganiseType::class,$voyage);
         $form->handleRequest($request);
@@ -111,6 +135,10 @@ class VoyageOrganiseController extends AbstractController
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
+            //flash message
+            $flashy->warning('Voyage organisé modifié avec succès !', 'http://your-awesome-link.com');
+
             return $this->redirectToRoute("listVoyage");
         }
         return $this->render("voyage_organise/updateVoyage.html.twig",array("formVoyage"=>$form->createView()));
@@ -121,13 +149,71 @@ class VoyageOrganiseController extends AbstractController
     /**
      * @Route("/removeVoyage/{id}",name="removeVoyage")
      */
-    public function delete($id){
+    public function delete($id, FlashyNotifier $flashy){
         $voyage= $this->getDoctrine()->getRepository(VoyageOrganise::class)->find($id);
         $em= $this->getDoctrine()->getManager();
         $em->remove($voyage);
         $em->flush();
+
+        //flash message
+        $flashy->error('Voyage organisé supprimé avec succès !', 'http://your-awesome-link.com');
+
         return $this->redirectToRoute("listVoyage");
     }
+
+
+
+
+
+    /**
+     * @Route("/sortbynameasc", name="sortname")
+     */
+    public function triDestAsc(VoyageOrganiseRepository $repo,Request $request)
+    {
+        $requestString=$request->get('searchValue');
+        $events = $repo->orderByDestAscQB();
+
+        return $this->render('voyage_organise/showVoyagesFront.html.twig', [
+            "voyages"=>$events
+        ]);
+    }
+    /**
+     * @Route("/sortbynamedsc", name="sortname2")
+     */
+    public function triDestDesc(VoyageOrganiseRepository $repo,Request $request)
+    {
+        $requestString=$request->get('searchValue');
+        $events = $repo->orderByDestDescQB();
+
+        return $this->render('voyage_organise/showVoyagesFront.html.twig', [
+            "voyages"=>$events
+        ]);
+    }
+    /**
+     * @Route("/sortbyprixdsc", name="sortprix")
+     */
+    public function triPrixDesc(VoyageOrganiseRepository $repo,Request $request)
+    {
+        $requestString=$request->get('searchValue');
+        $events = $repo->orderByPrixDescQB();
+
+        return $this->render('voyage_organise/showVoyagesFront.html.twig', [
+            "voyages"=>$events
+        ]);
+    }
+    /**
+     * @Route("/sortbyprixasc", name="sortprix2")
+     */
+    public function triPrixAsc(VoyageOrganiseRepository $repo,Request $request)
+    {
+        $requestString=$request->get('searchValue');
+        $events = $repo->orderByPrixAscQB();
+
+        return $this->render('voyage_organise/showVoyagesFront.html.twig', [
+            "voyages"=>$events
+        ]);
+    }
+
 
 
 
