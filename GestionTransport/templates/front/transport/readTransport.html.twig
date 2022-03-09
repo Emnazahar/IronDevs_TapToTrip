@@ -11,37 +11,28 @@
                     <form action="#">
                 <div class="fields">
                     <div class="form-group">
+                        <a>Categorie</a>
                         {{ form_widget(formSearchTransport.categorie, {'attr': {'class': 'form-control'}}) }}
                         {{ form_errors(formSearchTransport.categorie, {'attr': {'class': 'text-danger'}}) }}
                     </div>
 
+
                     <div class="form-group">
-                        <input type="text" id="checkin_date" class="form-control" placeholder="Date from">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="checkin_date" class="form-control" placeholder="Date to">
-                    </div>
-                    <div class="form-group">
-                        <div class="range-slider">
-		              		<span>
-                                {#{{ form_widget(formSearchTransport.prixMin, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(formSearchTransport.prixMin, {'attr': {'class': 'text-danger'}}) }} -
+                        <a>Prix Min</a>
+                                {{ form_widget(formSearchTransport.prixMin, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formSearchTransport.prixMin, {'attr': {'class': 'text-danger'}}) }}
+                        <a>Prix Max</a>
                                 {{ form_widget(formSearchTransport.prixMax, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(formSearchTransport.prixMax, {'attr': {'class': 'text-danger'}}) }}#}
-                                <input type="number" value="25000" min="0" max="120000"/>	-
-                                <input type="number" value="50000" min="0" max="120000"/>
-                            </span>
-                            <input value="1000" min="0" max="120000" step="500" type="range"/>
-                            <input value="50000" min="0" max="120000" step="500" type="range"/>
-                            </svg>
-                        </div>
+                                {{ form_errors(formSearchTransport.prixMax, {'attr': {'class': 'text-danger'}}) }}
+
+
                     </div>
-                    <div class="form-group">
+
                         <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
-                    </div>
+                    {{form_end(formSearchTransport)}}
                 </div>
             </form>
-         {{form_end(formSearchTransport)}}
+
         </div>
     </div>
 

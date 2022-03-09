@@ -76,16 +76,49 @@ class TransportRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findByCriteria($categorie, $prixMin, $prixMax) {
+    public function findByCriterias($categorieId, $prixMin, $prixMax) {
         return $this->createQueryBuilder('t')
             ->Where('t.categorie = :val')
-            ->Where('t.prix IS IN (:val2,:val3)')
-            ->setParameter('val', $categorie)
+            ->andWhere('t.user IS NULL')
+            ->andWhere('t.prix >= :val2')
+            ->andWhere('t.prix <= :val3')
+            ->setParameter('val', $categorieId)
             ->setParameter('val2', $prixMin)
             ->setParameter('val3', $prixMax)
             ->getQuery()
             ->getResult()
             ;
+    }
+
+
+    public function findNumberUsersByCategorieName($categorieName)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT c FROM App\Entity\Categorie c WHERE c.nom = :val'
+        )->setParameter('val',$categorieName);
+
+       $query->getResult();
+        $idCategorie=array();
+        foreach($query->getResult() as $categorie) {
+            array_push($idCategorie,$categorie->getId());
+        }
+
+        $query2 =  $this->createQueryBuilder('t')
+            ->where('t.categorie = :val' )
+            ->andWhere('t.user IS NOT NULL' )
+            ->setParameter('val',$idCategorie)
+            ->groupBy("t.user")
+            ->getQuery()
+            ->getResult();
+
+        $users=array();
+        foreach($query2 as $user) {
+            array_push($users,$user->getId());
+        }
+
+        return count($users);
+
     }
 
 }

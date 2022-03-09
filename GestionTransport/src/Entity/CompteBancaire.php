@@ -33,6 +33,16 @@ class CompteBancaire
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=700)
+     */
+    private $stripe_public_key;
+
+    /**
+     * @ORM\Column(type="string", length=700)
+     */
+    private $stripe_secret_key;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +80,30 @@ class CompteBancaire
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getStripePublicKey(): ?string
+    {
+        return $this->stripe_public_key;
+    }
+
+    public function setStripePublicKey(string $stripe_public_key): self
+    {
+        $this->stripe_public_key = $stripe_public_key;
+
+        return $this;
+    }
+
+    public function getStripeSecretKey(): ?string
+    {
+        return $this->stripe_secret_key;
+    }
+
+    public function setStripeSecretKey(string $stripe_secret_key): self
+    {
+        $this->stripe_secret_key = $stripe_secret_key;
 
         return $this;
     }

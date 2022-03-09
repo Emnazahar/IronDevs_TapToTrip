@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Billet;
+use App\Entity\Categorie;
 use App\Entity\CompteBancaire;
 use App\Entity\Transport;
 use App\Entity\User;
-use App\Form\DateReservationType;
 use App\Form\FindTransportType;
+use App\Form\PaymentType;
 use App\Form\ReservationTransportType;
 use App\Form\TransportType;
 use App\Repository\BilletRepository;
@@ -16,10 +17,13 @@ use DateTime;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class TransportController extends AbstractController
 {
@@ -77,24 +81,24 @@ class TransportController extends AbstractController
         $form = $this->createForm(TransportType::class, $transport);
         $form->handleRequest($request);
 
-       /*
-        $imageDB = $transport->getImage();
-        if($imageForm == null) {
+        /*
+         $imageDB = $transport->getImage();
+         if($imageForm == null) {
 
-        } else {
-            $filename = $imageForm->getClientOriginalName();//crypté image
-            $imageForm->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
-            $transport->setImage($filename);
-        }*/
+         } else {
+             $filename = $imageForm->getClientOriginalName();//crypté image
+             $imageForm->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
+             $transport->setImage($filename);
+         }*/
 
-            //$filename = uniqid();//crypté image
+        //$filename = uniqid();//crypté image
 
-      /*  $uploadFile = $request->file('image');
-        if($uploadFile != null) {
-            $filename = uniqid();//crypté image
-            $uploadFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
-            $transport->setImage($filename);
-        }*/
+        /*  $uploadFile = $request->file('image');
+          if($uploadFile != null) {
+              $filename = uniqid();//crypté image
+              $uploadFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
+              $transport->setImage($filename);
+          }*/
 
         if ($form->isSubmitted() && $form->isValid()) {
             //upload image
@@ -126,11 +130,21 @@ class TransportController extends AbstractController
     /**
      * @Route("/frontReadTransport",name="front_read_transport")
      */
-    public function frontReadTransport() {
+    public function frontReadTransport(Request $request) {
+        $categorie = null;
+        $prixMin = null;
+        $prixMax = null;
 
-        $transport= $this->getDoctrine()->getRepository(Transport::class)->findAllByUserIDNull();
-        $form = $this->createForm(FindTransportType::class,null);
-        return $this->render("front/transport/readTransport.html.twig",array('tabTransport'=>$transport, "formSearchTransport" => $form->createView()));
+        $transports= $this->getDoctrine()->getRepository(Transport::class)->findAllByUserIDNull();
+        $form = $this->createForm(FindTransportType::class,null,['categorie' => $categorie,
+            'prixMin' => $prixMin ,'prixMax' => $prixMax]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $transports = $this->findTransportByCriteria($form);
+        }
+
+        return $this->render("front/transport/readTransport.html.twig",array('tabTransport'=>$transports, "formSearchTransport" => $form->createView()));
     }
 
     /**
@@ -139,10 +153,13 @@ class TransportController extends AbstractController
     public function verifBillet(Request $request,BilletRepository $repository, $idTransport): Response
     {
         $idUserConnected = $this->getParameter('app.userID');
-
+        $formPayment = $this->createForm(PaymentType::class);
         $billet = new Billet();
         $idBillet = null;
         $dateReservation = null;
+        $token = null;
+        $login = null;
+        $formPayment = $this->createForm(PaymentType::class,null,['token' => $token, 'login'=> $login]);
         //$repository = new BilletRepository();
         $form = $this->createForm(ReservationTransportType::class,null,['idBillet' => $idBillet, 'dateReservation' => $dateReservation]);
         $form->handleRequest($request);
@@ -164,16 +181,22 @@ class TransportController extends AbstractController
             $dateReservationTimeStamp = $form['dateReservation']->getData()->getTimestamp();
             $dateArriveVol = $billet->getVol()->getDatearrive();
             $dateArriveVolTimeStamp = $dateArriveVol->getTimestamp();
-            var_dump("//////////////////",$dateReservationTimeStamp);
-            var_dump("//////////////////",$dateArriveVolTimeStamp);
+            // var_dump("//////////////////",$dateReservationTimeStamp);
+            // var_dump("//////////////////",$dateArriveVolTimeStamp);
             if ($dateReservationTimeStamp < $dateArriveVolTimeStamp){
                 echo "<script type='text/javascript'>alert('Invalid Date, date before date of lending! Please verify');</script>";
                 return $this->render('front/transport/reserverTransport.html.twig',  array("formReservationTransport" => $form->createView()));
             } else{
+                /*
                 $this->payReservationTransport($idUserConnected,$idTransport);
-                $em = $this->getDoctrine()->getManager();
+               em = $this->getDoctrine()->getManager();
                 $transport= $this->getDoctrine()->getRepository(Transport::class)->findByUserID($idUserConnected);
-                return $this->render('front/transport/readMyTransports.html.twig' ,array('tabTransportByUser'=>$transport));
+                return $this->render('front/transport/readMyTransports.html.twig' ,array('tabTransportByUser'=>$transport));*/
+                $em = $this->getDoctrine()->getManager();
+                $compte = $em->getRepository(CompteBancaire::class)->findOneByUserId($idUserConnected);
+                return $this->redirectToRoute('payment_transport', array("idTransport"=> $idTransport));
+                /*return $this->render('front/transport/paymentTransport.html.twig',array("idTransport"=> $idTransport,"formPayment" => $formPayment->createView(),
+                    'stripe_public_key' => $compte->getStripePublicKey()));*/
             }
         }
 
@@ -195,7 +218,7 @@ class TransportController extends AbstractController
             $compte->setSolde($compte->getSolde() - $transport->getPrix());
             $transport->setUser($user);
             $em->flush();
-            //$this->sendMail();
+            $this->sendMail();
         }
     }
 
@@ -213,49 +236,93 @@ class TransportController extends AbstractController
     public function sendMail()
     {
         $message = new Swift_Message('Test email');
-        $message->setFrom('dahmenitesnim1@gmail.com');
+        $message->setFrom('svnoclip11@gmail.com');
         $message->setTo('yosrdahmeni6@gmail.com');
         $message->setBody('azerzrz');
 
         $this->mailer->send($message);
-//var_dump("///////////////",$this->mailer);
+
+    }
+
+
+    public function findTransportByCriteria($form)
+    {
+        $categorie = $form['categorie']->getData()->getNom();
+
+        //var_dump('///////////////////', $form['categorie']->getData()->getNom());
+        $prixMin = $form['prixMin']->getData();
+        $prixMax = $form['prixMax']->getData();
+
+       // var_dump("*******************",$prixMin);
+        if ( $prixMin == null) {
+            $prixMin=0;
+        }
+        if ( $prixMax == null) {
+            $prixMax=100000000000000;
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $idCategorie = $em->getRepository(Categorie::class)->findOneByName($categorie)->getId();
+
+        //var_dump("*******************",$idCategorie);
+
+        $transports = $this->getDoctrine()->getRepository(Transport::class)->findByCriterias($idCategorie, $prixMin, $prixMax);
+        //var_dump("+++++++++++++",count($transports));
+        //echo "<script type='text/javascript'>alert($transports);</script>";
+       return $transports;
+          //return $this->render("front/transport/readTransport.html.twig",array('tabTransport'=>$transports, "formSearchTransport" => $form->createView()));
 
     }
 
     /**
-     * @Route("/findTransportByCriteria",name="find_transport_by_criteria")
+     * @Route("/paymentTransport/{idTransport}",name="payment_transport")
      */
-    public function findTransportByCriteria(Request $request): Response
+    public function Pay($idTransport,Request $request)
     {
-        $categorie = null;
-        $prixMin = null;
-        $prixMax = null;
+        $idUserConnected = $this->getParameter('app.userID');
+        $em = $this->getDoctrine()->getManager();
+        $compte = $em->getRepository(CompteBancaire::class)->findOneByUserId($idUserConnected);
 
-        $form = $this->createForm(FindTransportType::class,null,['categorie' => $categorie, 'prixMin' => $prixMin,
-            'prixMax' => $prixMax]);
+        $form = $this->createForm(PaymentType::class,null);
+
+
+
+        /*$form = $this->get('formPayment.factory')
+      ->createNamedBuilder('payment-form')
+      ->add('token', HiddenType::class, [
+        'constraints' => [new NotBlank()],
+      ])
+      ->add('submit', SubmitType::class)
+      ->getForm();*/
+
+        // var_dump("////////////////",$form['token']->getData());
+
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
 
-            $categorie = $form['categorie']->getData();
-            $prixMin = $form['prixMin'];
-            $prixMax = $form['prixMax'];
+        //var_dump("////////////////",$form['token']->getData());
+        var_dump("************************",$form['login']->getData());
 
-            if ($prixMin != null) {
-                $prixMin = $form['prixMin']->getData();
+        if ($request->isMethod('POST')) {
+
+            if ($form->isValid()) {
+                $user = $em->getRepository(User::class)->find($idUserConnected);
+                if ($user->getLogin() != $form['login']->getData()){
+                    echo "<script type='text/javascript'>alert('Wrong login');</script>";
+                    return $this->render('front/transport/paymentTransport.html.twig', ['formPayment' => $form->createView(),
+                        'stripe_public_key' => $compte->getStripePublicKey()]);
+                }
+                $this->payReservationTransport($idUserConnected,$idTransport);
+                $transport= $this->getDoctrine()->getRepository(Transport::class)->findByUserID($idUserConnected);
+                return $this->render('front/transport/readMyTransports.html.twig' ,array('tabTransportByUser'=>$transport));
             }
-            if ($prixMax != null) {
-                $prixMax = $form['prixMax']->getData();
-            }
-
-            $transport= $this->getDoctrine()->getRepository(Transport::class)->findByCriteria($categorie, $prixMin, $prixMax);
-            return $this->render("front/transport/readTransport.html.twig",array('tabTransport'=>$transport, "formSearchTransport" => $form->createView()));
         }
 
-        return $this->redirectToRoute('front_read_transport');
+        //   return $this->redirectToRoute('front_read_transport');
+        return $this->render('front/transport/paymentTransport.html.twig', ['formPayment' => $form->createView(),
+            'stripe_public_key' => $compte->getStripePublicKey()]);
+
     }
-
-
 
 }

@@ -1,0 +1,55 @@
+{% extends 'front/baseFront.html.twig' %}
+
+{% block body %}
+
+<script src="https://js.stripe.com/v3/"></script>
+
+{{ form_start(formPayment, {attr: {id: formPayment.vars.id, novalidate: 'novalidate'} }) }}
+<div class="form-group">
+    <label for="card-element">
+        Credit or Debit Card
+    </label>
+    <div id="card-element" class="form-control"></div>
+    <div id="card-errors" class="help-block" role="alert"></div>
+</div>
+ <a>Please enter your login</a>
+{{ form_widget(formPayment.login) }}
+{{ form_widget(formPayment.token) }}
+{{ form_end(formPayment) }}
+
+<script type="text/javascript">
+
+    var form = document.getElementById('{{ formPayment.vars.id }}');
+    var errors = document.getElementById('card-errors');
+
+    var stripe = Stripe('{{ stripe_public_key }}');
+    var elements = stripe.elements();
+    var card = elements.create('card');
+
+    card.mount('#card-element');
+    card.addEventListener('change', function(event) {
+        if (event.error) {
+            errors.textContent = event.error.message;
+            form.classList.add('has-error');
+        } else {
+            errors.textContent = '';
+            form.classList.remove('has-error');
+        }
+    });
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                errors.textContent = result.error.message;
+                form.classList.add('has-error');
+            } else {
+                document.getElementById('{{ formPayment.children.token.vars.id }}').setAttribute('value', result.token.id);
+                form.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

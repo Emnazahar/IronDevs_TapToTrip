@@ -2,23 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Categorie;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-class FindTransportType extends AbstractType
+class PaymentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('categorie' ,EntityType::class,[
-                'class'=>Categorie::class,
-                'choice_label'=>'nom'])
-            ->add('prixMin')
-            ->add('prixMax')
+            ->add('token', HiddenType::class, [
+                'constraints' => [new NotBlank()]])
+            ->add('login')
+
+            ->add('submit', SubmitType::class)
 
         ;
     }
@@ -26,9 +27,8 @@ class FindTransportType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults( [
-            'categorie' => null,
-            'prixMin' => null,
-            'prixMax' => null,
+            'token' => null,
+            'login' => null
         ] );
     }
 }
