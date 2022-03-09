@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="{{ asset ('front/css/flaticon.css') }}">
         <link rel="stylesheet" href="{{ asset ('front/css/icomoon.css') }}">
         <link rel="stylesheet" href="{{ asset ('front/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset ('back/vendors/mdi/css/materialdesignicons.min.css')}}">
+
     {% endblock %}
 
 
@@ -49,6 +51,7 @@
                 <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="{{ path('front_read_transport') }}" class="nav-link">Transport</a></li>
                 <li class="nav-item"><a href="{{ path('front_read_my_transport') }}" class="nav-link">My Reserved Transports</a></li>
+                <li class="nav-item"><a href="{{ path('front_read_my_transport_favori') }}" class="nav-link">My Transports Favori</a></li>
                 <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
                 <li class="nav-item active"><a href="contact.html" class="nav-link">Contact</a></li>
                 <li class="nav-item cta"><a href="contact.html" class="nav-link"><span>Add listing</span></a></li>
@@ -158,6 +161,7 @@
     <script src="{{ asset ('front/https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false') }}"></script>
     <script src="{{ asset ('front/js/google-map.js') }}"></script>
     <script src="{{ asset ('front/js/main.js') }}"></script>
+
 {% endblock %}
 </body>
 </html>

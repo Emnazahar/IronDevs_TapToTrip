@@ -44,10 +44,16 @@ class User
      */
     private $billets;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Transport::class, mappedBy="users")
+     */
+    private $transportsfavoris;
+
     public function __construct()
     {
         $this->transports = new ArrayCollection();
         $this->billets = new ArrayCollection();
+        $this->transportsfavoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,6 +152,33 @@ class User
             if ($billet->getUser() === $this) {
                 $billet->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transport>
+     */
+    public function getTransportsfavoris(): Collection
+    {
+        return $this->transportsfavoris;
+    }
+
+    public function addTransportsfavori(Transport $transportsfavori): self
+    {
+        if (!$this->transportsfavoris->contains($transportsfavori)) {
+            $this->transportsfavoris[] = $transportsfavori;
+            $transportsfavori->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransportsfavori(Transport $transportsfavori): self
+    {
+        if ($this->transportsfavoris->removeElement($transportsfavori)) {
+            $transportsfavori->removeUser($this);
         }
 
         return $this;

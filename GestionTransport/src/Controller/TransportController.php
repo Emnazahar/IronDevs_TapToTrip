@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Knp\Component\Pager\PaginatorInterface;
 
 class TransportController extends AbstractController
 {
@@ -81,25 +82,6 @@ class TransportController extends AbstractController
         $form = $this->createForm(TransportType::class, $transport);
         $form->handleRequest($request);
 
-        /*
-         $imageDB = $transport->getImage();
-         if($imageForm == null) {
-
-         } else {
-             $filename = $imageForm->getClientOriginalName();//crypté image
-             $imageForm->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
-             $transport->setImage($filename);
-         }*/
-
-        //$filename = uniqid();//crypté image
-
-        /*  $uploadFile = $request->file('image');
-          if($uploadFile != null) {
-              $filename = uniqid();//crypté image
-              $uploadFile->move($this->getParameter('kernel.project_dir') . '/public/uploads/produit_image', $filename);
-              $transport->setImage($filename);
-          }*/
-
         if ($form->isSubmitted() && $form->isValid()) {
             //upload image
             $uploadFile = $form['image']->getData();
@@ -130,7 +112,7 @@ class TransportController extends AbstractController
     /**
      * @Route("/frontReadTransport",name="front_read_transport")
      */
-    public function frontReadTransport(Request $request) {
+    public function frontReadTransport(Request $request, PaginatorInterface $paginator) {
         $categorie = null;
         $prixMin = null;
         $prixMax = null;
@@ -144,6 +126,11 @@ class TransportController extends AbstractController
             $transports = $this->findTransportByCriteria($form);
         }
 
+        $transports = $paginator->paginate(
+            $transports, /* query NOT result */
+            $request->query->getInt('page', 1),
+            2
+        );
         return $this->render("front/transport/readTransport.html.twig",array('tabTransport'=>$transports, "formSearchTransport" => $form->createView()));
     }
 
@@ -160,7 +147,6 @@ class TransportController extends AbstractController
         $token = null;
         $login = null;
         $formPayment = $this->createForm(PaymentType::class,null,['token' => $token, 'login'=> $login]);
-        //$repository = new BilletRepository();
         $form = $this->createForm(ReservationTransportType::class,null,['idBillet' => $idBillet, 'dateReservation' => $dateReservation]);
         $form->handleRequest($request);
 
@@ -181,22 +167,13 @@ class TransportController extends AbstractController
             $dateReservationTimeStamp = $form['dateReservation']->getData()->getTimestamp();
             $dateArriveVol = $billet->getVol()->getDatearrive();
             $dateArriveVolTimeStamp = $dateArriveVol->getTimestamp();
-            // var_dump("//////////////////",$dateReservationTimeStamp);
-            // var_dump("//////////////////",$dateArriveVolTimeStamp);
             if ($dateReservationTimeStamp < $dateArriveVolTimeStamp){
                 echo "<script type='text/javascript'>alert('Invalid Date, date before date of lending! Please verify');</script>";
                 return $this->render('front/transport/reserverTransport.html.twig',  array("formReservationTransport" => $form->createView()));
             } else{
-                /*
-                $this->payReservationTransport($idUserConnected,$idTransport);
-               em = $this->getDoctrine()->getManager();
-                $transport= $this->getDoctrine()->getRepository(Transport::class)->findByUserID($idUserConnected);
-                return $this->render('front/transport/readMyTransports.html.twig' ,array('tabTransportByUser'=>$transport));*/
                 $em = $this->getDoctrine()->getManager();
                 $compte = $em->getRepository(CompteBancaire::class)->findOneByUserId($idUserConnected);
                 return $this->redirectToRoute('payment_transport', array("idTransport"=> $idTransport));
-                /*return $this->render('front/transport/paymentTransport.html.twig',array("idTransport"=> $idTransport,"formPayment" => $formPayment->createView(),
-                    'stripe_public_key' => $compte->getStripePublicKey()));*/
             }
         }
 
@@ -248,14 +225,11 @@ class TransportController extends AbstractController
     public function findTransportByCriteria($form)
     {
         $categorie = $form['categorie']->getData()->getNom();
-
-        //var_dump('///////////////////', $form['categorie']->getData()->getNom());
         $prixMin = $form['prixMin']->getData();
         $prixMax = $form['prixMax']->getData();
 
-       // var_dump("*******************",$prixMin);
         if ( $prixMin == null) {
-            $prixMin=0;
+            $prixMin=50;
         }
         if ( $prixMax == null) {
             $prixMax=100000000000000;
@@ -264,14 +238,8 @@ class TransportController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $idCategorie = $em->getRepository(Categorie::class)->findOneByName($categorie)->getId();
 
-        //var_dump("*******************",$idCategorie);
-
         $transports = $this->getDoctrine()->getRepository(Transport::class)->findByCriterias($idCategorie, $prixMin, $prixMax);
-        //var_dump("+++++++++++++",count($transports));
-        //echo "<script type='text/javascript'>alert($transports);</script>";
        return $transports;
-          //return $this->render("front/transport/readTransport.html.twig",array('tabTransport'=>$transports, "formSearchTransport" => $form->createView()));
-
     }
 
     /**
@@ -285,23 +253,8 @@ class TransportController extends AbstractController
 
         $form = $this->createForm(PaymentType::class,null);
 
-
-
-        /*$form = $this->get('formPayment.factory')
-      ->createNamedBuilder('payment-form')
-      ->add('token', HiddenType::class, [
-        'constraints' => [new NotBlank()],
-      ])
-      ->add('submit', SubmitType::class)
-      ->getForm();*/
-
-        // var_dump("////////////////",$form['token']->getData());
-
-
         $form->handleRequest($request);
 
-
-        //var_dump("////////////////",$form['token']->getData());
         var_dump("************************",$form['login']->getData());
 
         if ($request->isMethod('POST')) {
@@ -318,11 +271,42 @@ class TransportController extends AbstractController
                 return $this->render('front/transport/readMyTransports.html.twig' ,array('tabTransportByUser'=>$transport));
             }
         }
-
-        //   return $this->redirectToRoute('front_read_transport');
         return $this->render('front/transport/paymentTransport.html.twig', ['formPayment' => $form->createView(),
             'stripe_public_key' => $compte->getStripePublicKey()]);
+    }
 
+    /**
+     * @Route("/transportFavori/{idTransport}",name="transport_favori")
+     */
+    public function transportFavori($idTransport)
+    {
+        $idUserConnected = $this->getParameter('app.userID');
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($idUserConnected);
+        $transport = $em->getRepository(Transport::class)->find($idTransport);
+
+        $user->addTransportsfavori($transport);
+        $transport->addUser($user);
+
+        $em->flush();
+
+        $transportsFavori = $user->getTransportsfavoris();
+
+        return $this->render('front/transport/readMyTransports.html.twig' ,array('tabTransportByUser'=>$transportsFavori));
+    }
+
+
+    /**
+     * @Route("/frontReadMyTransportFavori",name="front_read_my_transport_favori")
+     */
+    public function frontReadMyTransportFavori()
+    {
+        $idUserConnected = $this->getParameter('app.userID');
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($idUserConnected);
+        $transportsFavori = $user->getTransportsfavoris();
+
+        return $this->render('front/transport/readMyTransports.html.twig' ,array('tabTransportByUser'=>$transportsFavori));
     }
 
 }

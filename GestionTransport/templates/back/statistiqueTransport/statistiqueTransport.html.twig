@@ -5,10 +5,19 @@
 
 <script src="//code.highcharts.com/4.1.8/highcharts.js"></script>
 <script src="//code.highcharts.com/4.1.8/modules/exporting.js"></script>
+
+
 <script type="text/javascript">
     {{ chart(chart) }}
 </script>
 
 <div id="piechart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+    <script type="text/javascript">
+        {{ chart(barChart) }}
+    </script>
+
+    <div id="barchart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
 
 {% endblock %}

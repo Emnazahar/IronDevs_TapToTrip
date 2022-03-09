@@ -36,8 +36,8 @@ class BilletRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Billet
+
+    public function calculPrixByMonth($month)
     {
         return $this->createQueryBuilder('b')
             ->andWhere('b.exampleField = :val')
@@ -46,5 +46,5 @@ class BilletRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

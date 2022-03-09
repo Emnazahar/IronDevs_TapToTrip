@@ -51,13 +51,33 @@
                                 <h2 class="heading mt-3">Categorie: {{ c.categorie.nom }}</h2>
                                 <h2 class="heading mt-3">Prix: {{ c.prix }} dt </h2>
                                 <a href="{{ path('verif_billet',{'idTransport':c.id}) }}">Réserver</a>
+                                <p></p>
+                                <div class="template-demo d-flex justify-content-between flex-nowrap">
+                                 <a href="{{ path('transport_favori',{'idTransport':c.id}) }}" type="button" class="btn btn-outline-secondary btn-rounded btn-icon">
+                                        <i class="mdi mdi-heart-outline text-danger"></i>
+                                 </a>
+
+                                {#<button type="button" class="btn btn-outline-secondary btn-rounded btn-icon">
+                                    <i class="mdi mdi-heart-outline text-danger"></i>
+                                </button>#}
+                                </div>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
 
+
+
     </div>
     </div>
     </section>
+
+
+    <div class="navigation">
+        {{ knp_pagination_render(tabTransport) }}
+    </div>
+
+
+
 
 {% endblock %}

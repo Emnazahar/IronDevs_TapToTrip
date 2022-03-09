@@ -37,6 +37,11 @@ class Billet
      */
     private $vol;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Billet
     public function setVol(?Vol $vol): self
     {
         $this->vol = $vol;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): self
+    {
+        $this->prix = $prix;
 
         return $this;
     }
