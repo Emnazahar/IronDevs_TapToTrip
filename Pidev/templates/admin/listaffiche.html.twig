@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% for message in app.flashes('message') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+<h4 class="card-title"> User's List  </h4>
+    <div>
+
+    </div>
+    <div>
+        <a class="btn btn-success" href="{{ path('addUser') }}">Add User</a>
+    </div>
+<div class="table-responsive">
+    <table class="table table-striped">
+    <tr>
+        <td class="sorting_asc" tabindex="0"scope="col" aria-controls="example2" rowspan="1" colspan="1">id</td>
+        <td class="sorting_asc" tabindex="0"scope="col" aria-controls="example2" rowspan="1" colspan="1">nom</td>
+        <td class="sorting_asc" tabindex="0"scope="col" aria-controls="example2" rowspan="1" colspan="1">prenom</td>
+        <td class="sorting_asc" tabindex="0"scope="col" aria-controls="example2" rowspan="1" colspan="1">numtel</td>
+        <td class="sorting_asc" tabindex="0"scope="col" aria-controls="example2" rowspan="1" colspan="1">email</td>
+        <td class="sorting_asc" tabindex="0"scope="col" aria-controls="example2" rowspan="1" colspan="1">update</td>
+        <td class="sorting_asc" tabindex="0"scope="col" aria-controls="example2" rowspan="1" colspan="1">delete</td>
+    </tr>
+    {% for i in tabadmin %}
+        <tr>
+            <td>{{ i.Id }}</td>
+            <td>{{ i.Nom }}</td>
+            <td>{{ i.Prenom }}</td>
+            <td>{{ i.Numtel}}</td>
+            <td>{{ i.Email }}</td>
+            <td>
+                <a class="btn btn-primary" href="{{ path('update',{'id':i.Id}) }}" >Update</a>
+            </td>
+            <td>
+
+                <form method="post" action="{{ path('remove', {'id':i.Id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer le user ?');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ i.id) }}">
+                    <button class="btn btn-danger ">Remove</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+
+    </table>
+</div>
+        {% endblock %}

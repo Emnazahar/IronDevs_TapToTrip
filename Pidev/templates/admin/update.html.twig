@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ form_start(formadmin,{'attr':{'novalidate': 'novalidate'}}) }}
+    <div class="card card-primary">
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <div class="col-lg-6 col-md-8 p-1 m-1">
+                        {{ form_errors(formadmin.nom)}}
+                        {{ form_widget(formadmin.nom,{ 'attr': {'class': 'form-control', 'placeholder' : 'Name'}}) }}
+                    </div>
+                    <div class="col-lg-6 col-md-8 p-1 m-1">
+                        {{ form_errors(formadmin.prenom)}}
+                        {{ form_widget(formadmin.prenom,{ 'attr': {'class': 'form-control', 'placeholder' : 'Last Name'}}) }}
+                    </div>
+                    <div class="col-lg-6 col-md-8 p-1 m-1">
+                        {{ form_errors(formadmin.numtel)}}
+                        {{ form_widget(formadmin.numtel,{ 'attr': {'class': 'form-control', 'placeholder' : 'Numero de Tel °'}}) }}
+                    </div>
+
+                    <div class="col-lg-6 col-md-8 p-1 m-1" >
+                        {{ form_errors(formadmin.email)}}
+                        {{ form_widget(formadmin.email,{ 'attr': {'class': 'form-control', 'placeholder' : 'Email Adress'}}) }}
+                    </div>
+
+                    <div class="col-lg-6 col-md-8 p-1 m-1">
+                        {{ form_errors(formadmin.password)}}
+                        {{ form_widget(formadmin.password,{ 'attr': {'class': 'form-control', 'placeholder' : 'Password', 'id' : ''}}) }}
+                    </div>
+                    <div class="col-lg-6 col-md-8 p-1 m-1">
+                        {{ form_errors(formadmin.confirm_password)}}
+                        {{ form_widget(formadmin.confirm_password,{ 'attr': {'class': 'form-control', 'placeholder' : 'Confirm password'}}) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+                <a class="btn btn-success" href="{{ path('adminlist') }}">Back to list</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
