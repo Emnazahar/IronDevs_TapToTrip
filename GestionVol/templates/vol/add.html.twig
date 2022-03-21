@@ -1,0 +1,72 @@
+
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <div >
+        <a href="{{ path('listeV') }}" class="mdi mdi-keyboard-backspace"  > </a>
+    </div>
+    <div class="card-body">
+    <h4  class="card-title">add vol </h4>
+    <div class="table-responsive">
+
+    <table class="table">
+
+
+        <tr>
+
+            <td>
+                {{ form_label(form.NumVol,"NumVol") }}
+            </td>
+            <td>
+                {{ form_widget(form.NumVol)}}
+                {{ form_errors(form.NumVol) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(form.Date,"Date") }}
+            </td>
+            <td>
+                {{ form_widget(form.Date ) }}
+                {{ form_errors(form.Date) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(form.HeureDep,"HeureDep") }}
+            </td>
+            <td>
+                {{ form_widget(form.HeureDep)}}
+                {{ form_errors(form.HeureDep) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(form.HeureArrive,"HeureArrive") }}
+            </td>
+            <td>
+                {{ form_widget(form.HeureArrive)}}
+                {{ form_errors(form.HeureArrive) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(form.Origine,"Origine") }}
+            </td>
+            <td>
+                {{ form_widget(form.Origine)}}
+                {{ form_errors(form.Origine) }}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {{ form_end(form) }}
+            </td>
+        </tr>
+
+    </table>
+{% endblock %}

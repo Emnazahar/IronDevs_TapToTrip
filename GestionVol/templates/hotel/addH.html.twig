@@ -1,0 +1,8 @@
+{% extends 'base-back.html.twig' %}
+{% block body %}
+    <h1>Ajouter Un Hotel</h1>
+    {{ form(form, {'attr' : {'novalidate':'novalidate'}}) }}
+
+     <div class="btn btn-success"> <i class="material-icons">&#xE147;</i><span></span><a href="{{ path('affichage') }}">Retour vers <b>La Liste</b></a>
+    <div class="btn btn-success"> <i class="material-icons">&#xE147;</i><span></span><a href="{{ path('hotel') }}">Retour vers <b>L'Acceuil</b></a>
+{% endblock %}

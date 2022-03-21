@@ -1,0 +1,79 @@
+{% extends 'back/baseBack.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Tableau des transports</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>
+                                Matricule
+                            </th>
+                            <th>
+                                Marque
+                            </th>
+                            <th>
+                                Modele
+                            </th>
+                            <th>
+                                Nombre de siege
+                            </th>
+                            <th>
+                                Prix
+                            </th>
+                            <th>
+                                Categorie
+                            </th>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                Supprimer
+                            </th>
+                            <th>
+                                Modifier
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for c in tabTransport%}
+                            <tr>
+                                <td>
+                                    {{ c.matricule }}
+                                </td>
+                                <td>
+                                    {{ c.marque }}
+                                </td>
+                                <td>
+                                    {{ c.modele }}
+                                </td>
+                                <td>
+                                    {{ c.nbsiege }}
+                                </td>
+                                <td>
+                                    {{ c.prix }}
+                                </td>
+                                <td>
+                                    {{ c.categorie.nom }}
+                                </td>
+                                <td>
+                                    <img class="card-img-top img-fluid" src="{{ asset('uploads/produit_image/'~c.image) }}" style="width: 100px ; height: 100px"></td>
+                                </td>
+                                <td>
+                                    <a href ="{{ path('delete_transport',{'id':c.id}) }}">Supprimer</a>
+                                </td>
+                                <td>
+                                    <a href ="{{ path('edit_transport',{'id':c.id}) }}">Modifier</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

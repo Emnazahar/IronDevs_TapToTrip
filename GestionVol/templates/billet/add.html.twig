@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <div >
+        <a href="{{ path('listeB') }}" class="mdi mdi-keyboard-backspace"  > </a>
+    </div>
+    <div class="card-body">
+    <h4  class="card-title">add billet </h4>
+    <div class="table-responsive">
+
+    <table class="table">
+
+
+        <tr>
+
+            <td>
+                {{ form_label(form.Num,"Num") }}
+            </td>
+            <td>
+                {{ form_widget(form.Num)}}
+                {{ form_errors(form.Num) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(form.Date,"Date") }}
+            </td>
+            <td>
+                {{ form_widget(form.Date ) }}
+                {{ form_errors(form.Date) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(form.Destination,"Destination") }}
+            </td>
+            <td>
+                {{ form_widget(form.Destination)}}
+                {{ form_errors(form.Destination) }}
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                {{ form_label(form.Categorie,"Categorie") }}
+            </td>
+            <td>
+                {{ form_widget(form.Categorie)}}
+                {{ form_errors(form.Categorie) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(form.Prix,"Prix") }}
+            </td>
+            <td>
+                {{ form_widget(form.Prix)}}
+                {{ form_errors(form.Prix) }}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                {{ form_end(form) }}
+            </td>
+        </tr>
+
+    </table>
+{% endblock %}

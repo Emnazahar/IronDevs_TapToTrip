@@ -1,0 +1,84 @@
+{% extends 'front/voyage.html.twig' %}
+{% block body %}
+
+{# Tri #}
+    <div class="col-12">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+            <button type="button" class="btn btn-light">Trier Par</button>
+
+            <div class="btn-group" role="group">
+
+
+                <a class="dropdown-item" href="{{ path('sortname') }}">Par Nom Destination ↑</a>
+                <a class="dropdown-item" href="{{ path('sortname2') }}">Par Nom Destination ↓</a>
+                <a class="dropdown-item" href="{{ path('sortprix') }}">Par Prix ↑</a>
+                <a class="dropdown-item" href="{{ path('sortprix2') }}">Par Prix ↓</a>
+
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
+
+{# end Tri #}
+
+
+    <div class="col-lg-9" >
+
+        <div class="row" >
+
+            {% for voyage in voyages %}
+
+            <div class="col-md-4 ftco-animate" >
+
+                <div class="destination">
+
+                    <a href="{{ path('detailVoyage',{'id':voyage.id}) }}"  class="img img-2 d-flex justify-content-center align-items-center" style="background-image: url('{{ asset ('upload/img/' ~ voyage.image) }}')">
+                        <div class="icon d-flex justify-content-center align-items-center">
+                            <span class="icon-search2"></span>
+                        </div>
+                    </a>
+                    <div class="text p-3">
+                        <div class="d-flex">
+                            <div class="one">
+                                <h3><a href="{{ path('detailVoyage',{'id':voyage.id}) }}" >{{ voyage.destination }}</a></h3>
+                            </div>
+
+                            <div class="two">
+                                <span class="price">{{ voyage.prix }} dt</span>
+                            </div>
+
+                        </div>
+
+                        <p class="days"><span>Hôtel : {{ voyage.hotel }}</span></p>
+                        <p class="days"><span>Durée : {{ voyage.duree }}</span></p>
+                        <hr>
+                        <p class="bottom-area d-flex">
+                            <span>Attraction : {{ voyage.attraction }}</span>
+                            <span class="ml-auto"><a href="{{ path('detailVoyage',{'id':voyage.id}) }}" >Découvrir</a></span>
+                        </p>
+                    </div>
+
+                </div>
+
+
+            </div>
+            {% endfor %}
+
+        </div>
+        <div class="row mt-5">
+            <div class="col text-center">
+                <div class="block-27">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h4 class="card-title"> liste des vols  </h4>
+    <div>
+        <a href="{{ path('addVol') }}">Add Vol</a>
+    </div>
+    <div class="table-responsive">
+    {{ form_start(formSearch,{'attr': {'novalidate': 'novalidate'}} ) }}
+    {{ form_widget(formSearch.NumVol,{'class':'form-control'},)}}
+    {{ form_widget(formSearch.search, {'attr': {'placeholder': 'REGISTER','class':'btn btn-primary' }})}}
+    {{ form_end(formSearch)}}
+    <table class="table table-striped">
+
+        <tr>
+            <td>Id</td>
+            <th>num vol</th>
+            <td>Date</td>
+            <td>HeureDep</td>
+            <td>HeureArrive</td>
+            <td>Update</td>
+            <td>Delete</td>
+
+
+        </tr>
+        {% for i in cath %}
+            <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.NumVol }}</td>
+                <td>{{ i.Date | date}}</td>
+                <td>{{ i.HeureDep }}</td>
+                <td>{{ i.HeureArrive}}</td>
+                <td>
+                    <a href="{{ path('updateVol',{'id':i.id}) }}">Update</a>
+                </td>
+                <td>  <a href="{{ path('removeVol',{'id':i.id}) }}">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+

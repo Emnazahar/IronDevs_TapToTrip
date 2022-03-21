@@ -1,0 +1,40 @@
+
+
+
+<a><img src="{{ asset ('back-office/images/logo_taptotrip.jpg') }}" alt="Logo"/></a>
+                        <h1>Fichier <b>PDF</b> des Hotels</h1>
+
+                        <table border="1" >
+                            <thead>
+                            <tr>
+                                <th><b>ID</b></th>
+                                <th><b>Nom Hotel</b></th>
+                                <th><b>Nombre Des Etoiles</b></th>
+                                <th><b>Adresse</b></th>
+                                <th><b>Description</b></th>
+                                <th><b>Chambres</b></th>
+
+
+                                {#  <th>Image</th>
+                        <th>Actions</th>#}
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for pdfh in pdfhotel %}
+                                <tr>
+                                    <td>{{ pdfh.id }}</td>
+                                    <td>{{ pdfh.nomH }}</td>
+                                    <td>{{ pdfh.nbEtoiles }}</td>
+                                    <td>{{ pdfh.adresse }}</td>
+                                    <td>{{ pdfh.descriptionH}}</td>
+                                    {# <td><img src="{{ i.image }}"></td>#}
+
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+
+

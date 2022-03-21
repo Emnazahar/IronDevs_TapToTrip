@@ -1,0 +1,79 @@
+
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <title> TapToTrip | Liste des Billets </title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <!-- css -->
+    <link rel="stylesheet" href="{{ asset ('Back/css/styleList.css') }}">
+
+    </head>
+
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>Liste des <b>Billets</b></h2>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <a href="{{ path ('addBillet') }}" class="btn btn-success" ><i class="material-icons">&#xE147;</i> <span>Nouveau Billet</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tables des Billets -->
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Numéro</th>
+                        <th>Date</th>
+                        <th>Destination</th>
+                        <th>Categorie</th>
+                        <th>Prix</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tr>
+                    {% for i in billet %}
+                        <tr>
+                            <td>{{ i.id }}</td>
+                            <td>{{ i.Num }}</td>
+                            <td>{{ i.Date|date}}</td>
+                            <td>{{ i.Destination }}</td>
+                            <td>{{ i.Categorie}}</td>
+                            <td>{{ i.Prix }}</td>
+
+                            <td>
+                                <a href="{{ path('updateVol',{'id':i.id}) }}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="{{ path('removeVol',{'id':i.id}) }}" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <ul class="pagination">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+    </html>
+{% endblock %}

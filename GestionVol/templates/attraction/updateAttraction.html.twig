@@ -1,0 +1,68 @@
+{% extends 'accueil/base-back.html.twig' %}
+{% form_theme formAttraction 'bootstrap_4_layout.html.twig' %}
+{% block body %}
+
+    {{ form_start(formAttraction, {'attr':{'novalidate':'novalidate' } }) }}
+    <div >
+        <a href="{{ path('listAttraction') }}"   class="mdi mdi-keyboard-backspace"> Revenir à la liste </a>
+    </div>
+    <div class="card-body">
+        <h4  class="card-title">Modifier Attraction</h4>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>
+                        {{ form_label(formAttraction.nom,"Nom Attraction") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formAttraction.nom)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formAttraction.lieu,"Lieu") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formAttraction.lieu ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formAttraction.description,"Description") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formAttraction.description)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formAttraction.images,"Photo") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formAttraction.images)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>Images</h4>
+                    </td>
+                    <td>
+                        {% for image in attraction.images %}
+                    <img src="{{ asset ('upload/img/' ~ image.nom) }}" alt="Image" style="width: 80px ; height: 80px">
+
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        {{ form_end(formAttraction) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+

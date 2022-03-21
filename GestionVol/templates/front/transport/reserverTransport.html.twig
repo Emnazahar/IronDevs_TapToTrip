@@ -1,0 +1,20 @@
+{% extends 'front/baseFront.html.twig' %}
+
+{% block body %}
+
+    <h1>entrer id billet</h1>
+{{ form_start(formReservationTransport, {attr: {novalidate: 'novalidate'}}) }}
+<label for="exampleInputPassword1">id billet</label>
+{{ form_widget(formReservationTransport.idBillet, {'attr': {'class': 'form-control'}}) }}
+
+    <h1>Please choose a date to reserve</h1>
+
+    <label for="exampleInputPassword1">id billet</label>
+    {{ form_widget(formReservationTransport.dateReservation) }}
+
+    <input type="submit" value="Submit" class= 'btn btn-primary waves-effect waves-light'>
+
+    {{form_end(formReservationTransport)}}
+
+
+{% endblock %}

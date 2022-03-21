@@ -1,0 +1,27 @@
+<div class="col-lg-3 sidebar ftco-animate">
+    <div class="sidebar-wrap bg-light ftco-animate">
+        <h3 class="heading mb-4">Find Transport</h3>
+        {{ form_start(formSearchTransport, {attr: {novalidate: 'novalidate'}}) }}
+
+            <div class="fields">
+                <div class="form-group">
+                    {{ form_widget(formSearchTransport.categorie, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formSearchTransport.categorie, {'attr': {'class': 'text-danger'}}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(formSearchTransport.prixMin, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formSearchTransport.prixMin, {'attr': {'class': 'text-danger'}}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(formSearchTransport.prixMax, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formSearchTransport.prixMax, {'attr': {'class': 'text-danger'}}) }}
+                </div>
+
+            </div>
+        <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
+
+        {{form_end(formSearchTransport)}}
+    </div>
+</div>

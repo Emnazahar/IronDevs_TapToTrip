@@ -1,0 +1,85 @@
+{% extends 'accueil/base-back.html.twig' %}
+{% form_theme formVoyage 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(formVoyage, {'attr':{'novalidate':'novalidate' } }) }}
+
+    <div >
+        <a href="{{ path('listVoyage') }}"   class="mdi mdi-keyboard-backspace"> Revenir à la liste </a>
+    </div>
+    <div class="card-body">
+        <h4  class="card-title">Ajouter Nouveau Voyage Organisé</h4>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <td>
+                        {{ form_label(formVoyage.destination,"Destination") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formVoyage.destination)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formVoyage.duree,"Durée") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formVoyage.duree ) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formVoyage.programme,"Programme") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formVoyage.programme)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formVoyage.image,"Photo") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formVoyage.image)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formVoyage.hotel,"Hotel") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formVoyage.hotel)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formVoyage.prix,"Prix") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formVoyage.prix)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form_label(formVoyage.attraction,"Attraction") }}
+                    </td>
+                    <td>
+                        {{ form_widget(formVoyage.attraction)}}
+                    </td>
+                </tr>
+            </table>
+                <tr>
+                    <td></td>
+                    <td>
+                    {{ form_end(formVoyage) }}
+                    </td>
+
+                </tr>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+

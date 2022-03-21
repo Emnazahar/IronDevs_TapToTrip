@@ -1,0 +1,100 @@
+{% extends 'accueil/base-back.html.twig' %}
+{% block body %}
+
+    <title> TapToTrip | Liste des Voyages Organisés  </title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Load Flashy default CSS -->
+    <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+
+    <!-- Flashy depends on jQuery -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Load Flashy default JavaScript -->
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+
+    <!-- Include Flashy default partial -->
+    {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+
+    <!-- css -->
+    <link rel="stylesheet" href="{{ asset ('Back/css/styleList.css') }}">
+
+    </head>
+
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>Liste des <b>Voyages Organisés</b></h2>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <a href="{{ path ('addVoyage') }}" class="btn btn-success" ><i class="material-icons">&#xE147;</i> <span>Nouveau Voyage Organisé</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tables des Voyages Organises -->
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Destination</th>
+                        <th>Durée</th>
+                        <th>Programme</th>
+                        <th>Hotel</th>
+                        <th>Prix</th>
+                        <th>Attraction</th>
+                        <th>Image</th>
+
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    </tr>
+                    {% for voyage in voyages %}
+                        <tr>
+                            <td>{{ voyage.id }}</td>
+                            <td>{{ voyage.destination }}</td>
+                            <td>{{ voyage.duree }}</td>
+                            <td>{{ voyage.programme }}</td>
+                            <td>{{ voyage.hotel }}</td>
+                            <td>{{ voyage.prix }} dt</td>
+                            <td>{{ voyage.attraction }}</td>
+                            <td><img src="{{ asset ('upload/img/' ~ voyage.image) }}" alt="Image" style="width: 80px ; height: 80px"></td>
+
+                            <td>
+                                <a href="{{ path('updateVoyage',{'id':voyage.id}) }}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                <a href="{{ path('removeVoyage',{'id':voyage.id}) }}" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <ul class="pagination">
+                        <li class="page-item"> {{ knp_pagination_render(voyages) }} </li>
+                    </ul>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+    </html>
+{% endblock %}

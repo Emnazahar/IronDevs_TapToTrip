@@ -1,0 +1,78 @@
+{% extends 'front/baseFront.html.twig' %}
+
+{% block body %}
+    <section class="ftco-section ftco-degree-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 sidebar ftco-animate">
+                    <div class="sidebar-wrap bg-light ftco-animate">
+                    <h3 class="heading mb-4">Find Transport</h3>
+                        {{ form_start(formSearchTransport, {attr: {novalidate: 'novalidate'}}) }}
+                    <form action="#">
+                <div class="fields">
+                    <div class="form-group">
+                        <a>Categorie</a>
+                        {{ form_widget(formSearchTransport.categorie, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(formSearchTransport.categorie, {'attr': {'class': 'text-danger'}}) }}
+                    </div>
+
+
+                    <div class="form-group">
+                        <a>Prix Min</a>
+                                {{ form_widget(formSearchTransport.prixMin, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formSearchTransport.prixMin, {'attr': {'class': 'text-danger'}}) }}
+                        <a>Prix Max</a>
+                                {{ form_widget(formSearchTransport.prixMax, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formSearchTransport.prixMax, {'attr': {'class': 'text-danger'}}) }}
+
+
+                    </div>
+
+                        <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
+                    {{form_end(formSearchTransport)}}
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+
+                {% for c in tabTransport%}
+                    <div class="col-md-3 d-flex ftco-animate">
+                        <div class="blog-entry align-self-stretch">
+                            <a href="blog-single.html" class="block-20" style="background-image: url('{{ asset('uploads/produit_image/'~c.image)}}')">
+                            </a>
+                            <div class="text p-4 d-block">
+                                <!--<span class="tag">Tips, Travel</span>-->
+                                <h2 class="heading mt-3">Marque: {{ c.marque }}</h2>
+                                <h2 class="heading mt-3">Modele: {{ c.modele }}</h2>
+                                <h2 class="heading mt-3">Nombre de siege: {{ c.nbsiege }}</h2>
+                                <h2 class="heading mt-3">Categorie: {{ c.categorie.nom }}</h2>
+                                <h2 class="heading mt-3">Prix: {{ c.prix }} dt </h2>
+                                <a href="{{ path('verif_billet',{'idTransport':c.id}) }}">Réserver</a>
+                                <div class="template-demo d-flex justify-content-between flex-nowrap">
+                                    <a href="{{ path('transport_favori',{'idTransport':c.id}) }}" type="button" class="btn btn-outline-secondary btn-rounded btn-icon">
+                                        <i class="mdi mdi-heart-outline text-danger"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+
+    </div>
+    </div>
+    </section>
+
+
+    <div class="navigation">
+        {{ knp_pagination_render(tabTransport) }}
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'front/voyage.html.twig' %}
+{% block body %}
+
+    {# Tri #}
+    <div class="col-12">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+            <button type="button" class="btn btn-light">Trier Par</button>
+
+            <div class="btn-group" role="group">
+
+
+                <a class="dropdown-item" href="{{ path('sortname') }}">Par Nom Destination ↑</a>
+                <a class="dropdown-item" href="{{ path('sortname2') }}">Par Nom Destination ↓</a>
+                <a class="dropdown-item" href="{{ path('sortprix') }}">Par Prix ↑</a>
+                <a class="dropdown-item" href="{{ path('sortprix2') }}">Par Prix ↓</a>
+
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')}}"></script>
+
+    {# end Tri #}
+
+
+    <div class="col-lg-9" >
+
+        <div class="row" >
+
+            {% for hotel in hotels %}
+
+                <div class="col-md-4 ftco-animate" >
+
+                    <div class="destination">
+
+                                <div class="two">
+                                    <span class="price">{{ hotel.nomH }} dt</span>
+                                </div>
+
+                            </div>
+
+                            <p class="days"><span>Hôtel : {{ voyage.hotel }}</span></p>
+                            <p class="days"><span>Durée : {{ voyage.duree }}</span></p>
+                            <hr>
+                            <p class="bottom-area d-flex">
+                                <span>Attraction : {{ voyage.attraction }}</span>
+                                <span class="ml-auto"><a href="{{ path('detailVoyage',{'id':voyage.id}) }}" >Découvrir</a></span>
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="row mt-5">
+            <div class="col text-center">
+                <div class="block-27">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

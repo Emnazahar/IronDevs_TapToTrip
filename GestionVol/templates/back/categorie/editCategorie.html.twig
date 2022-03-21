@@ -1,0 +1,31 @@
+{% extends 'back/baseBack.html.twig' %}
+{% form_theme formCategorie 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="header-title m-t-0 m-b-30">Modifier categorie</h1>
+                            {{ form_start(formCategorie, {attr: {novalidate: 'novalidate'}}) }}
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Nom de la catégorie</label>
+                                {{ form_widget(formCategorie.nom, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formCategorie.nom, {'attr': {'class': 'text-danger'}}) }}
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputConfirmPassword1">Boite Vitesse</label>
+                                {{ form_widget(formCategorie.boitevitesse, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(formCategorie.boitevitesse, {'attr': {'class': 'text-danger'}}) }}
+                            </div>
+                            <input type="submit" value="Submit" class= 'btn btn-primary waves-effect waves-light'>
+                            {{form_end(formCategorie)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
